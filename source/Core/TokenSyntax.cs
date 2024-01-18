@@ -24,24 +24,24 @@ namespace Wrath.Core
 			{ "^", TokenType.BitwiseOperatorXor },
 
 			{ $"{ComparisonOperatorStart}{ComparisonOperatorEqual}", TokenType.ComparisonOperatorEqual },
-			// { "is", TokenType.ComparisonOperatorIs },
+			{ "is", TokenType.ComparisonOperatorIs },
 			{ $"{ComparisonOperatorStart}{ComparisonOperatorGreater}", TokenType.ComparisonOperatorGreater },
 			{ $"{ComparisonOperatorStart}{ComparisonOperatorGreater}{ComparisonOperatorEqual}", TokenType.ComparisonOperatorGreaterOrEqual },
 			{ $"{ComparisonOperatorStart}{ComparisonOperatorLesser}", TokenType.ComparisonOperatorLesser },
 			{ $"{ComparisonOperatorStart}{ComparisonOperatorLesser}{ComparisonOperatorEqual}", TokenType.ComparisonOperatorLesserOrEqual },
 			{ $"{ComparisonOperatorStart}{ComparisonOperatorLesser}{ComparisonOperatorGreater}", TokenType.ComparisonOperatorNotEqual },
 
-			// { "char", TokenType.DataTypeCharacter },
+			{ "char", TokenType.DataTypeCharacter },
 			{ "float", TokenType.DataTypeFloatingPoint },
 			{ "int", TokenType.DataTypeInteger },
-			// { "logical", TokenType.DataTypeLogical },
+			{ "logical", TokenType.DataTypeLogical },
 
-			// { "and", TokenType.LogicalOperatorAnd },
-			// { "not", TokenType.LogicalOperatorNot },
-			// { "or", TokenType.LogicalOperatorOr },
+			{ "and", TokenType.LogicalOperatorAnd },
+			{ "not", TokenType.LogicalOperatorNot },
+			{ "or", TokenType.LogicalOperatorOr },
 
-			// { "false", TokenType.LogicalValueFalse },
-			// { "true", TokenType.LogicalValueTrue },
+			{ "false", TokenType.LogicalValueFalse },
+			{ "true", TokenType.LogicalValueTrue },
 
 			{ "(", TokenType.ParenthesisLeft },
 			{ ")", TokenType.ParenthesisRight },

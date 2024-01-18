@@ -18,31 +18,31 @@ namespace Wrath.Core
 		BitwiseOperatorXor,
 
 		ComparisonOperatorEqual,
-		// ComparisonOperatorIs,
+		ComparisonOperatorIs,
 		ComparisonOperatorGreater,
 		ComparisonOperatorGreaterOrEqual,
 		ComparisonOperatorLesser,
 		ComparisonOperatorLesserOrEqual,
 		ComparisonOperatorNotEqual,
 
-		// DataTypeCharacter,
+		DataTypeCharacter,
 		DataTypeFloatingPoint,
 		DataTypeInteger,
-		// DataTypeLogical, // equivalent to boolean
+		DataTypeLogical, // equivalent to boolean
 
-		// DataValueCharacter,
+		DataValueCharacter,
 		DataValueFloatingPoint,
 		DataValueInteger,
-		// DataValueLogical,
+		DataValueLogical,
 
 		Identifier,
 
-		// LogicalOperatorAnd,
-		// LogicalOperatorNot,
-		// LogicalOperatorOr,
+		LogicalOperatorAnd,
+		LogicalOperatorNot,
+		LogicalOperatorOr,
 
-		// LogicalValueFalse,
-		// LogicalValueTrue,
+		LogicalValueFalse,
+		LogicalValueTrue,
 
 		ParenthesisLeft,
 		ParenthesisRight,

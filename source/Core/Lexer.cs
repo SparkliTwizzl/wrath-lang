@@ -47,7 +47,7 @@ namespace Wrath.Core
 				}
 				else
 				{
-					throw new InvalidDataException($"Source file contains an unknown character at ({LineNumber}, {ColumnNumber}): \'{CurrentChar}\'");
+					result.Add(ParseIdentifier());
 				}
 			}
 			return result.ToArray();
@@ -77,11 +77,12 @@ namespace Wrath.Core
 
 		private static bool IsWhitespace(char c)
 		{
-			return c == ' ' || c == '\t' || c == '\n';
+			return c == ' ' || c == '\t' || c == '\r' || c == '\n';
 		}
 
 		private Token ParseComparisonOperator()
 		{
+			var columnStartPosition = ColumnNumber;
 			var builder = new StringBuilder();
 			while (TokenSyntax.ComparisonOperatorCharacters.Contains(CurrentChar))
 			{
@@ -91,7 +92,26 @@ namespace Wrath.Core
 			var parsed = builder.ToString();
 			if (!TokenSyntax.LookUpTable.ContainsKey(parsed))
 			{
-				throw new InvalidDataException($"Source file contains an invalid string: {parsed}");
+				throw new InvalidDataException($"Source file contains an invalid string at ({LineNumber}, {columnStartPosition}): \"{parsed}\"");
+			}
+			TokenType type;
+			TokenSyntax.LookUpTable.TryGetValue(parsed, out type);
+			return new Token(type);
+		}
+
+		private Token ParseIdentifier()
+		{
+			var builder = new StringBuilder();
+			while (IsAlphabetic(CurrentChar))
+			{
+				builder.Append(CurrentChar);
+				Advance();
+			}
+
+			var parsed = builder.ToString();
+			if (!TokenSyntax.LookUpTable.ContainsKey(parsed))
+			{
+				return new Token(TokenType.Identifier, parsed);
 			}
 			TokenType type;
 			TokenSyntax.LookUpTable.TryGetValue(parsed, out type);
