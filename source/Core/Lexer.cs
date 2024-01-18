@@ -6,7 +6,9 @@ namespace Wrath.Core
 {
 	public class Lexer
 	{
+		private int ColumnNumber { get; set; } = 0;
 		private char CurrentChar { get; set; } = '\0';
+		private int LineNumber { get; set; } = 0;
 		private int Position { get; set; } = -1;
 		private string Text { get; set; } = string.Empty;
 
@@ -18,17 +20,22 @@ namespace Wrath.Core
 			var result = new List<Token>();
 			while (Position < Text.Length)
 			{
+				if (CurrentChar == '\n')
+				{
+					++LineNumber;
+					ColumnNumber = 0;
+				}
 				if (IsWhitespace(CurrentChar))
 				{
 					Advance();
 				}
-				else if (IsDigit(CurrentChar))
-				{
-					result.Add(ParseNumber());
-				}
 				else if (CurrentChar == TokenSyntax.ComparisonOperatorStart)
 				{
 					result.Add(ParseComparisonOperator());
+				}
+				else if (IsDigit(CurrentChar))
+				{
+					result.Add(ParseNumber());
 				}
 				else if (TokenSyntax.LookUpTable.ContainsKey(CurrentChar.ToString()))
 				{
@@ -40,7 +47,7 @@ namespace Wrath.Core
 				}
 				else
 				{
-					Advance();
+					throw new InvalidDataException($"Source file contains an unknown character at ({LineNumber}, {ColumnNumber}): \'{CurrentChar}\'");
 				}
 			}
 			return result.ToArray();
@@ -49,6 +56,7 @@ namespace Wrath.Core
 		private void Advance()
 		{
 			++Position;
+			++ColumnNumber;
 			if (Position < Text.Length)
 			{
 				CurrentChar = Text[Position];

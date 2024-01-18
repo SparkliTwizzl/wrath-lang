@@ -4,10 +4,17 @@
 var filePath = "../../../../test.wrath";
 var text = File.ReadAllText(filePath);
 var lexer = new Lexer();
-var tokens = lexer.Tokenize(text);
-foreach (var token in tokens)
+try
 {
-	Console.Write($"{token}, ");
+	var tokens = lexer.Tokenize(text);
+	foreach (var token in tokens)
+	{
+		Console.Write($"{token}, ");
+	}
+}
+catch (Exception exception)
+{
+	Console.WriteLine(exception.Message);
 }
 Console.WriteLine();
 Console.WriteLine();
