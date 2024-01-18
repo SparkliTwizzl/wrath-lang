@@ -18,7 +18,7 @@ namespace Wrath.Core
 		BitwiseOperatorXor,
 
 		ComparisonOperatorEqual,
-		ComparisonOperatorIs,
+		// ComparisonOperatorIs,
 		ComparisonOperatorGreater,
 		ComparisonOperatorGreaterOrEqual,
 		ComparisonOperatorLesser,
@@ -46,5 +46,7 @@ namespace Wrath.Core
 
 		ParenthesisLeft,
 		ParenthesisRight,
+
+		StatementEnd,
 	}
 }

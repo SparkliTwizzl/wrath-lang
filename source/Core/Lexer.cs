@@ -1,11 +1,12 @@
 
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Wrath.Core
 {
 	public class Lexer
 	{
-		private char? CurrentChar { get; set; } = null;
+		private char CurrentChar { get; set; } = '\0';
 		private int Position { get; set; } = -1;
 		private string Text { get; set; } = string.Empty;
 
@@ -15,7 +16,7 @@ namespace Wrath.Core
 			Text = text;
 			Advance();
 			var result = new List<Token>();
-			while (CurrentChar is not null)
+			while (Position < Text.Length)
 			{
 				if (IsWhitespace(CurrentChar))
 				{
@@ -25,10 +26,14 @@ namespace Wrath.Core
 				{
 					result.Add(ParseNumber());
 				}
-				else if (TokenSyntax.LookUpTable.ContainsKey(((char)CurrentChar).ToString()))
+				else if (CurrentChar == TokenSyntax.ComparisonOperatorStart)
+				{
+					result.Add(ParseComparisonOperator());
+				}
+				else if (TokenSyntax.LookUpTable.ContainsKey(CurrentChar.ToString()))
 				{
 					TokenType type;
-					TokenSyntax.LookUpTable.TryGetValue(((char)CurrentChar).ToString(), out type);
+					TokenSyntax.LookUpTable.TryGetValue(CurrentChar.ToString(), out type);
 					var token = new Token(type);
 					result.Add(token);
 					Advance();
@@ -48,25 +53,41 @@ namespace Wrath.Core
 			{
 				CurrentChar = Text[Position];
 			}
-			else
-			{
-				CurrentChar = null;
-			}
 		}
 
-		private static bool IsDigit(char? c)
+		private static bool IsAlphabetic(char c)
+		{
+			var regex = new Regex(@"[\p{L}]");
+			return regex.Match(c.ToString()).Success;
+		}
+
+		private static bool IsDigit(char c)
 		{
 			const string digits = "0123456789";
-			if (c is null)
-			{
-				return false;
-			}
-			return digits.Contains((char)c);
+			return digits.Contains(c);
 		}
 
-		private static bool IsWhitespace(char? c)
+		private static bool IsWhitespace(char c)
 		{
 			return c == ' ' || c == '\t' || c == '\n';
+		}
+
+		private Token ParseComparisonOperator()
+		{
+			var builder = new StringBuilder();
+			while (TokenSyntax.ComparisonOperatorCharacters.Contains(CurrentChar))
+			{
+				builder.Append(CurrentChar);
+				Advance();
+			}
+			var parsed = builder.ToString();
+			if (!TokenSyntax.LookUpTable.ContainsKey(parsed))
+			{
+				throw new InvalidDataException($"Source file contains an invalid string: {parsed}");
+			}
+			TokenType type;
+			TokenSyntax.LookUpTable.TryGetValue(parsed, out type);
+			return new Token(type);
 		}
 
 		private Token ParseNumber()
